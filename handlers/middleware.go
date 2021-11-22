@@ -23,3 +23,7 @@ func UseJson(h http.Handler) http.Handler {
 	// Only PUT, POST, and PATCH requests are considered.
 	return gorilla.ContentTypeHandler(h, "application/json")
 }
+
+func UseIdempotency(h http.Handler, opts IdempotencyHandlerOptions, store IdempotencyStore) http.Handler {
+	return IdempotencyHandler(h, opts, store)
+}
