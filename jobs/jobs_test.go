@@ -18,11 +18,11 @@ import (
 
 type dummyStore struct{}
 
-func (*dummyStore) Jobs(datastore.ListOptions) ([]Job, error) { return nil, nil }
-func (*dummyStore) Job(id uuid.UUID) (Job, error)             { return Job{}, nil }
-func (*dummyStore) InsertJob(*Job) error                      { return nil }
-func (*dummyStore) UpdateJob(*Job) error                      { return nil }
-func (*dummyStore) IncreaseExecCount(j *Job) error            { return nil }
+func (*dummyStore) Jobs(datastore.ListOptions) ([]Job, error)                 { return nil, nil }
+func (*dummyStore) Job(id uuid.UUID) (Job, error)                             { return Job{}, nil }
+func (*dummyStore) InsertJob(*Job) error                                      { return nil }
+func (*dummyStore) UpdateJob(*Job) error                                      { return nil }
+func (*dummyStore) AcceptJob(j *Job, acceptedGracePeriod time.Duration) error { return nil }
 func (*dummyStore) SchedulableJobs(acceptedGracePeriod, reSchedulableGracePeriod time.Duration, o datastore.ListOptions) ([]Job, error) {
 	return nil, nil
 }
@@ -266,3 +266,7 @@ func TestExecuteSendNotification(t *testing.T) {
 		}
 	})
 }
+
+// TODO job is already accepted error if concurrently accept job
+// TODO job should be accepted and exec count should be correctly increased
+// TODO job should be accepted if it was updated before grace period
